@@ -1,10 +1,22 @@
 package com.mohammadmirzakhani.courses.model;
 
+import javax.persistence.*;
+
+@Entity
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+    @Column
     private String firstName;
+    @Column
     private String lastName;
+    @Column
     private String email;
+
+
+    public User() {
+    }
 
     public User(String id, String firstName, String lastName, String email) {
         this.id = id;
