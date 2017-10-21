@@ -11,11 +11,11 @@ public interface UserService {
 
     Collection<User> getUsers();
 
-    User getUser(String id);
+    User getUser(int id);
 
     User editUser(User user) throws UserException;
 
-    void deleteUser(String id);
+    void deleteUser(int id);
 
-    boolean userExist(String id);
+    boolean userExist(int id);
 }
