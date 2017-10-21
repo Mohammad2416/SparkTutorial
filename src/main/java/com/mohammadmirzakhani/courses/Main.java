@@ -77,12 +77,12 @@ public class Main {
                             .toJsonTree(userService.getUser(Integer.parseInt(request.params(":id"))))));
         });
 
-//        delete("/users/:id", (request, response) -> {
-//            response.type("application/json");
-//            userService.deleteUser(Integer.parseInt(request.params(":id")));
-//            return new Gson().toJson(
-//                    new StandardResponse(StatusResponse.SUCCESS, "user deleted"));
-//        });
+        post("/deleteUser/:id", (request, response) -> {
+            response.type("application/json");
+            userService.deleteUser(Integer.parseInt(request.params(":id")));
+            return new Gson().toJson(
+                    new StandardResponse(StatusResponse.SUCCESS, "user deleted"));
+        });
 
 
         options("/users/:id", (request, response) -> {
