@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.service.ServiceRegistry;
 import org.omg.CORBA.UserException;
 
@@ -166,17 +167,51 @@ public class Main {
         return id;
     }
 
+
+    /*
+ORDER BY Clause:
+
+    String hql = "FROM Employee E WHERE E.id > 10 ORDER BY E.firstName DESC, E.salary DESC ";
+    Query query = session.createQuery(hql);
+    List results = query.list();
+
+GROUP BY Clause:
+     String hql = "SELECT SUM(E.salary), E.firtName FROM Employee E GROUP BY E.firstName";
+     Query query = session.createQuery(hql);
+     List results = query.list();
+
+Using Named Parameters:
+
+    String hql = "FROM Employee E WHERE E.id = :employee_id";
+    Query query = session.createQuery(hql);
+    query.setParameter("employee_id",10);
+    List results = query.list();
+
+UPDATE Clause:
+
+    String hql = "UPDATE Employee set salary = :salary WHERE id = :employee_id";
+    Query query = session.createQuery(hql);
+    query.setParameter("salary", 1000);
+    query.setParameter("employee_id", 10);
+    int result = query.executeUpdate();
+    System.out.println("Rows affected: " + result);
+     */
+
     @SuppressWarnings("unchecked")
     private static List<User> fetchAllContacts() {
         //Open session
         Session session = sessionFactory.openSession();
         //Create Criteria
-        Criteria criteria = session.createCriteria(User.class);
-        List<User> userList = criteria.list();
+//        Criteria criteria = session.createCriteria(User.class);
+//        criteria.add(Restrictions.like("firstName","Moh%"));
+//        List<User> userList = criteria.list();
+
+        List<User> userListFromQuery = session.createQuery("FROM User").list();
         //close the session
         session.close();
 
-        return userList;
+//        return userList;
+        return userListFromQuery;
     }
 
 
