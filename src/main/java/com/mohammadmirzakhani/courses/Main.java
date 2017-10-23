@@ -201,9 +201,18 @@ UPDATE Clause:
     private static List<User> fetchAllContacts() {
         //Open session
         Session session = sessionFactory.openSession();
-        //Create Criteria
+        //Create Criteria (SAMPLE CODE)
 //        Criteria criteria = session.createCriteria(User.class);
 //        criteria.add(Restrictions.like("firstName","Moh%"));
+//        criteria.add(Restrictions.between("salary", 1000, 2000));
+
+//        Projections & Aggregations:
+//        criteria.setProjection(Projections.rowCount());
+//        criteria.setProjection(Projections.avg("salary"));
+//        criteria.setProjection(Projections.countDistinct("firstName"));
+//        criteria.setProjection(Projections.max("salary"));
+
+
 //        List<User> userList = criteria.list();
 
         List<User> userListFromQuery = session.createQuery("FROM User").list();
