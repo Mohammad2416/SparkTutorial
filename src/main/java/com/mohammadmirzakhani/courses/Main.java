@@ -6,6 +6,7 @@ import com.mohammadmirzakhani.courses.interfaces.UserService;
 import com.mohammadmirzakhani.courses.model.StandardResponse;
 import com.mohammadmirzakhani.courses.model.User;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -77,9 +78,10 @@ public class Main {
                             .toJsonTree(userService.getUser(Integer.parseInt(request.params(":id"))))));
         });
 
-        post("/deleteUser/:id", (request, response) -> {
+        post("/deleteUser/", (request, response) -> {
             response.type("application/json");
-            userService.deleteUser(Integer.parseInt(request.params(":id")));
+            int userId = Integer.parseInt(request.queryParams("id"));
+            userService.deleteUser(userId);
             return new Gson().toJson(
                     new StandardResponse(StatusResponse.SUCCESS, "user deleted"));
         });
@@ -190,12 +192,17 @@ public class Main {
 
     private static void delete(User user) {
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
+      try{
+          session.beginTransaction();
+          session.delete(user);
+          session.getTransaction().commit();
 
-        session.delete(user);
+      }catch (HibernateException e){
+          session.getTransaction().rollback();
+      }finally {
+          session.close();
+      }
 
-        session.getTransaction().commit();
-        session.close();
     }
 
 }

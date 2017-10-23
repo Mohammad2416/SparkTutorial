@@ -1,5 +1,26 @@
 <hibernate-configuration xmlns="http://www.hibernate.org/xsd/orm/cfg">
     <session-factory>
+
+        <!--MySQL -->
+        <!--<property name = "hibernate.connection.driver_class">-->
+        <!--com.mysql.jdbc.Driver-->
+        <!--</property>-->
+        <!--<property name = "hibernate.dialect">-->
+        <!--org.hibernate.dialect.MySQLDialect-->
+        <!--</property>-->
+        <!-- SQL dialect -->
+        <!--<property name = "hibernate.connection.url">-->
+            <!--jdbc:mysql://localhost/test-->
+        <!--</property>-->
+
+        <!--<property name = "hibernate.connection.username">-->
+            <!--root-->
+        <!--</property>-->
+
+        <!--<property name = "hibernate.connection.password">-->
+            <!--cohondob-->
+        <!--</property>-->
+
         <!-- Database connection setting -->
         <property name="connection.driver_class">org.h2.Driver</property>
         <property name="connection.url">jdbc:h2:./data/SparkTutorial</property>
