@@ -195,6 +195,13 @@ UPDATE Clause:
     query.setParameter("employee_id", 10);
     int result = query.executeUpdate();
     System.out.println("Rows affected: " + result);
+
+Hibernate - Native SQL:
+    String sql = "SELECT * FROM EMPLOYEE WHERE id = :employee_id";
+    SQLQuery query = session.createSQLQuery(sql);
+    query.addEntity(Employee.class);
+    query.setParameter("employee_id", 10);
+    List results = query.list();
      */
 
     @SuppressWarnings("unchecked")
@@ -211,7 +218,6 @@ UPDATE Clause:
 //        criteria.setProjection(Projections.avg("salary"));
 //        criteria.setProjection(Projections.countDistinct("firstName"));
 //        criteria.setProjection(Projections.max("salary"));
-
 
 //        List<User> userList = criteria.list();
 
