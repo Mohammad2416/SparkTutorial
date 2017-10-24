@@ -2,7 +2,9 @@ package com.mohammadmirzakhani.courses;
 
 import com.google.gson.Gson;
 import com.mohammadmirzakhani.courses.enams.StatusResponse;
+import com.mohammadmirzakhani.courses.interfaces.CourseService;
 import com.mohammadmirzakhani.courses.interfaces.UserService;
+import com.mohammadmirzakhani.courses.model.Course;
 import com.mohammadmirzakhani.courses.model.StandardResponse;
 import com.mohammadmirzakhani.courses.model.User;
 import org.hibernate.Criteria;
@@ -27,6 +29,7 @@ import static spark.Spark.*;
 public class Main {
 
     private static UserService userService;
+    private static CourseService courseService;
 
     //Hold reusable refrence to SessionFactory (Since we need only one)
     private static final SessionFactory sessionFactory = buildSessionFactory();
@@ -53,12 +56,24 @@ public class Main {
 
         //x-www-form
         post("/addUsers", (request, response) -> {
-            userService.addUser(
+           int id = userService.addUser(
                     new User(
                             request.queryParams("firstName"),
                             request.queryParams("lastName"),
                             request.queryParams("email")
                     )
+            );
+           if (id > 0) {
+               return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
+           }else {
+               return new Gson().toJson(new StandardResponse(StatusResponse.ERROR));
+           }
+        });
+
+        //x-www-form
+        post("/addCourse", (request, response) -> {
+            courseService.addCourse(
+                    new Course(request.queryParams("courseName"))
             );
             return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS));
         });
@@ -101,9 +116,11 @@ public class Main {
             ArrayList<User> users = new ArrayList<>();
 
             @Override
-            public void addUser(User user) {
-                save(user);
+            public int addUser(User user) {
+               int id = saveUser(user);
                 users.add(user);
+
+                return id;
             }
 
             @Override
@@ -145,9 +162,42 @@ public class Main {
             }
 
         };
+
+        courseService = new CourseService() {
+            @Override
+            public void addCourse(Course course) {
+                saveCourse(course);
+            }
+
+            @Override
+            public Collection<Course> getCourses() {
+                return null;
+            }
+
+            @Override
+            public Course getCourse(int id) {
+                return null;
+            }
+
+            @Override
+            public Course editCourse(Course course) {
+                return null;
+            }
+
+            @Override
+            public void deleteCourse(int id) {
+
+            }
+
+            @Override
+            public boolean CourseExist(int id) {
+                return false;
+            }
+        };
+
     }
 
-    private static int save(User user) {
+    private static int saveUser(User user) {
 
         //Open a session
         Session session = sessionFactory.openSession();
@@ -157,6 +207,26 @@ public class Main {
 
         //Use the session to save the contact
         int id = (int) session.save(user);
+
+        //Commit the transaction
+        session.getTransaction().commit();
+
+        //close the session
+        session.close();
+
+        return id;
+    }
+
+    private static int saveCourse(Course course) {
+
+        //Open a session
+        Session session = sessionFactory.openSession();
+
+        //Begin a transaction
+        session.beginTransaction();
+
+        //Use the session to save the contact
+        int id = (int) session.save(course);
 
         //Commit the transaction
         session.getTransaction().commit();

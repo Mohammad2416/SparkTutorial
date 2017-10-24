@@ -18,7 +18,7 @@
         </property>
 
         <property name = "hibernate.connection.password">
-            *******
+            24162416
         </property>
 
         <!--if you want use H2 Database: -->
@@ -40,6 +40,7 @@
 
         <!-- Name the annotation entity class -->
         <mapping class="com.mohammadmirzakhani.courses.model.User"/>
+        <mapping class="com.mohammadmirzakhani.courses.model.Course"/>
 
     </session-factory>
 </hibernate-configuration>

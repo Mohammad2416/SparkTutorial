@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface UserService {
 
-    void addUser(User user);
+    int addUser(User user);
 
     Collection<User> getUsers();
 
